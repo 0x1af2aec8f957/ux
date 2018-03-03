@@ -33,8 +33,11 @@
       width: {type: String, default: window.innerWidth}, // 视频画布的宽度
     },
     computed: {
-      ctx() {
+      ctx() { // canvas对象
         return this.canvasEl && this.canvasEl.ctx
+      },
+      height(){ // canvas高度自适应
+        return this.videoEl && this.videoEl.offsetHeight
       }
     },
     data: {
@@ -49,7 +52,7 @@
     },
     methods: {
       play() { // 当音频/视频已开始或不再暂停时
-        return this.timer = setInterval(() => this.ctx.drawImage(this.videoEl, 0, 0, this.videoEl.offsetWidth, this.videoEl.offsetHeight), 1)
+        return this.timer = setInterval(() => this.ctx.drawImage(this.videoEl, 0, 0, this.width, this.height), 1)
       },
       playing() { // 因缓冲而暂停或停止后已就绪时
 
