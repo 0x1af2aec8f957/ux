@@ -1,5 +1,6 @@
 <template>
-  <div id="ux_backTop" class="align-center flex-column cursor-pointer" @click.stop="clickMethod">
+  <div v-if="type" id="ux_backTop" class="align-center flex-column cursor-pointer animated fadeInUp"
+       @click.stop="clickMethod">
     <i class="fa fa-arrow-circle-up"></i>
     <p class="backTop-text text-overflow">返回到顶部</p>
   </div>
@@ -9,12 +10,26 @@
   export default {
     name: 'uxBackTop',
     props: {
-      show: {type: Boolean, default: false} // 显示状态
+      distance: {type: Number, default: 30} // 滚动距离达到是显示
+    },
+    data() {
+      return {
+        type: false //显示状态
+      }
+    },
+    mounted() {
+      return window.addEventListener ? window.addEventListener('scroll', this.scroll, false) : window.attachEvent('scroll', this.scroll)
+    },
+    destroyed() { // 销毁绑定在window的事件
+      return window.removeEventListener ? window.removeEventListener("scroll", this.scroll) : window.detachEvent("scroll", this.scroll)
     },
     methods: {
-      clickMethod () {
-        return window.scrollTop = 0
+      clickMethod() {
+        return document.documentElement.scrollTop = 0
       },
+      scroll() {
+        return this.type = document.documentElement.scrollTop >= this.distance
+      }
     },
   }
 </script>
@@ -28,7 +43,7 @@
     right: 3.666em;
     bottom: 3.666em;
     color: #fff;
-    padding:.7em .7em;
+    padding: .7em .7em;
     transition: all .2s ease-in-out;
   }
 
@@ -40,9 +55,10 @@
   .backTop-text {
     font-size: .3em;
     font-weight: 300;
-    margin-top:.666em;
+    margin-top: .666em;
   }
-  #ux_backTop:hover{
+
+  #ux_backTop:hover {
     transform: translateY(-1em);
   }
 </style>

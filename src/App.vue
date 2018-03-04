@@ -29,6 +29,7 @@
       <div style="background-color: #110fff"></div>
       <div style="background-color: black"></div>
     </Carousel>
+    <Video autoplay :width="320"></Video>
   </div>
 </template>
 
@@ -48,6 +49,7 @@
   import Poptip from './components/Poptip'
   import Page from './components/Page'
   import Carousel from './components/Carousel'
+  import Video from './components/Video'
 
   export default {
     name: 'App',
@@ -67,6 +69,7 @@
       Poptip,
       Page,
       Carousel,
+      Video,
     },
     data () {
       return {
