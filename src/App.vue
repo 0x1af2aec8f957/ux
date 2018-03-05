@@ -29,7 +29,7 @@
       <div style="background-color: #110fff"></div>
       <div style="background-color: black"></div>
     </Carousel>
-    <Video autoplay :width="320"></Video>
+    <Video :width="320"></Video>
   </div>
 </template>
 

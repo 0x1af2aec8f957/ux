@@ -1,10 +1,23 @@
 <template>
   <div id="ux_video">
-    <canvas id="video_canvas" :width="width" :height="height" style="border:1px solid #d3d3d3;">
+    <canvas id="video_canvas" :width="width" :height="height">
       Your browser does not support the HTML5 canvas tag.
     </canvas>
+    <div class="controls-box flex-box no-select">
+      <div class="play-button align-center">
+        <i
+          :class="['fa', isReady?isPlay?'fa-pause':'fa-play':'fa-hourglass-half', isReady?'cursor-pointer':'cursor-wait']"
+          @click.stop="mediaMethod"></i>
+      </div>
+      <div class="progress-box relative-box text-center justify-between items-center">
+        <div class="progress-plan relative-box">
+          <span class="absolute-box progress-spot" :style="{width:`${percent}%`}"></span>
+        </div>
+        <div class="time-plan" v-text="timeText"><!--0:0:0--></div>
+      </div>
+    </div>
     <video id="canvas_video"
-           class="absolute-box"
+           class="absolute-box no-select"
            :src="src"
            :autoplay="autoplay"
            :controls="controls"
@@ -15,6 +28,7 @@
            @pause="pause"
            @ended="ended"
            @durationchange="duration=$event.target.duration"
+           @canplaythrough="isReady=true"
            @playing="playing"
            @volumechange="volume=$event.target.volum"
            @error="error"></video>
@@ -34,57 +48,123 @@
       width: {type: Number, default: window.innerWidth}, // 视频画布的宽度
     },
     computed: {
-      ctx() { // canvas对象
+      percent () { // 进度[不要使用进度条组件，为了组件之间尽可能不产生依赖]
+        return 100 * this.currentTime / this.duration
+      },
+      ctx () { // canvas对象
         return this.canvasEl && this.canvasEl.getContext('2d')
       },
-      height() { // canvas高度自适应
+      height () { // canvas高度自适应
         return this.videoEl && this.videoEl.offsetHeight
-      }
+      },
+      timeText () {
+        const {duration, currentTime} = this.$data,
+          [durationMinute, durationSecond] = [Math.floor(duration / 60), Math.floor(duration % 60)],
+          [currentMinute, currentSecond] = [Math.floor(currentTime / 60), Math.floor(currentTime % 60)]
+        return `${currentMinute}:${currentSecond}/${durationMinute}:${durationSecond}`
+      },
     },
-    data() {
+    watch: {
+      isReady (n, o) { // 首次初始化canvas第一帧
+        return n && this.ctx.drawImage(this.videoEl, 0, 0, this.width, this.height)
+      },
+    },
+    data () {
       return {
         videoEl: document.getElementById('canvas_video'),
         canvasEl: document.getElementById('video_canvas'),
+        isPlay: false, // 是否在正在播放
+        isReady: false, // 资源是否就绪
         duration: 0, // 视频长度[s]
         volume: 0, // 视频音量
+        currentTime: 0, // 当前视频的播放长度[s]
         timer: new Function() // 计时器
       }
     },
-    mounted() {
-      return [this.videoEl, this.canvasEl] = [this.$el.querySelector('#canvas_video'), this.$el.querySelector('#video_canvas')]
+    mounted () {
+      return [this.videoEl, this.canvasEl] = [
+        this.$el.querySelector('#canvas_video'),
+        this.$el.querySelector('#video_canvas')]
     },
     methods: {
-      play() { // 当音频/视频已开始或不再暂停时
-        return this.timer = this.ctx && setInterval(() => this.ctx.drawImage(this.videoEl, 0, 0, this.width, this.height), 1)
+      mediaMethod () { // 用户手动播放
+        return this.isPlay ? this.videoEl.pause() : this.videoEl.play()
       },
-      playing() { // 因缓冲而暂停或停止后已就绪时
+      play () { // 当音频/视频已开始或不再暂停时
+        return this.isPlay = true,
+          this.timer = this.ctx && setInterval(() => {
+            return this.currentTime = this.videoEl.currentTime,
+              this.ctx.drawImage(this.videoEl, 0, 0, this.width, this.height)
+          }, 1)
+      },
+      playing () { // 因缓冲而暂停或停止后已就绪时
 
       },
-      pause() { // 当音频/视频已暂停时
-        return clearInterval(this.timer)
+      pause () { // 当音频/视频已暂停时
+        return this.isPlay = false, clearInterval(this.timer)
       },
-      ended() { // 当目前的播放列表已结束时
-        return clearInterval(this.timer)
+      ended () { // 当目前的播放列表已结束时
+        return this.isPlay = false, clearInterval(this.timer)
       },
 //      durationchange() { // 当音频/视频的时长已更改时
 //      },
 //      volumechange() { // 当音量已更改时
 //      },
-      error() { // 当在音频/视频加载期间发生错误时
-      }
+      error () { // 当在音频/视频加载期间发生错误时
+      },
     },
-    destroyed() { // 销毁之前清除计时器
+    destroyed () { // 销毁之前清除计时器
       return clearInterval(this.timer)
-    }
+    },
   }
 </script>
 
 <style scoped>
   #ux_video {
     display: inline-block;
+    background-color: #efefef;
   }
 
   .absolute-box {
     z-index: 0;
+  }
+
+  canvas {
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+  }
+
+  .controls-box {
+    border-bottom-left-radius: 1px;
+    border-bottom-right-radius: 1px;
+  }
+
+  .progress-plan {
+    background-color: rgba(166, 166, 166, .5);
+    height: 25%;
+  }
+
+  .progress-plan > .progress-spot { /*进度条*/
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #ff6e0b;
+    z-index:2
+  }
+
+  .controls-box > *:first-child {
+    flex-basis: 2em;
+  }
+
+  .controls-box > *:last-child {
+    flex-basis: calc(100% - 2em);
+  }
+
+  .progress-box > *:first-child {
+    flex-basis: calc(100% - 6em);
+  }
+
+  .progress-box > *:last-child {
+    flex-basis: 6em;
   }
 </style>

@@ -32,20 +32,20 @@
       speed: {type: Number, default: 3} // 动画运动速度[单位：S]
     },
     computed: {
-      indicatorNumber() { // 指示器数量
+      indicatorNumber () { // 指示器数量
         const LEN = []
         for (let x of this.$slots.default/*无名插槽*/) x.tag && LEN.push(x) // 存储携带slot节点
         return LEN
       },
-      indicatorAxis() { // 显示器坐标轴
+      indicatorAxis () { // 显示器坐标轴
         return (this.indicator === 'bottom' || this.indicator === 'top') ? 'x' : 'y'
       },
-      time() { // 计时器运行需要的实际时间
+      time () { // 计时器运行需要的实际时间
         return this.speed * 1000
       },
     },
     watch: {
-      index(n, o) { // 运动过程[主要要的动画函数]
+      index (n, o) { // 运动过程[主要要的动画函数]
         this.$nextTick(() => {
           const parentEl = this.$el.querySelector('.carousel-slot'), currentEl = parentEl.children, // 运动元素
             indicatorEl = this.$el.querySelector('.active>.indicator-type'), // 正在变换的指示器
@@ -58,7 +58,7 @@
             currentEl[o].classList.remove('fadeIn') || currentEl[n].classList.add('fadeIn') // 移除、添加动画class
           } else { // slide
             parentEl.classList[n !== 0 /* 用于无缝，需要重复第一个slot[最后一个不需要过渡作用] */ ? 'add' : 'remove']('slide-transition') ||
-            css(parentEl, {left: `-${n * 100}%`})
+            css(parentEl, {transform: `translatex(-${n * 100}%)`})
           }
           this.indicatorTimer = setInterval(() => { // 指示器计时器开始运行
             indicatorAxis === 'x' ? css(indicatorEl, {width: `${number}%`}) : css(indicatorEl, {height: `${number}%`})
@@ -69,7 +69,7 @@
       }
       ,
     },
-    data() {
+    data () {
       return {
         timer: new Function(), // 跑马灯-计时器
         indicatorTimer: new Function(), // 指示器-计时器
@@ -77,39 +77,39 @@
         num: 0,
       }
     },
-    destroyed() { // 销毁之前清除计时器
+    destroyed () { // 销毁之前清除计时器
       return clearInterval(this.timer), clearInterval(this.indicatorTimer)
     },
-    mounted() {
+    mounted () {
       return this.index++/* 首次手动触发动画 */, this.triggerAnimation() // 后面自动触发动画
     },
     methods: {
-      triggerAnimation() {
+      triggerAnimation () {
         return this.timer = setInterval(() => {
           const {index, indicatorNumber, output} = this
           this.index = index + 1 < indicatorNumber.length ? index + 1 : 0
           output('slot', `---Carousel组件插槽内循环代码正在执行---`, s_count++)
         }, this.time)
       },
-      output(type, content, count) { // 控制台输出
+      output (type, content, count) { // 控制台输出
         return location.origin.includes('http://localhost:') &&
         console.log(`UX_Carousel[${type}]------`),
           console.dir(content),
           console.info(`UX_Carousel run ${count} times. --https://github.com/noteScript`)
       },
-      css(el, styleSheet) { // 批量操作css
+      css (el, styleSheet) { // 批量操作css
         for (let [k, v] of Object.entries(styleSheet)) el.style[k] = v
         return el // 返回操作完成的element对象
       },
-      click(index) {
+      click (index) {
         if (this.trigger === 'click') return clearInterval(this.timer), this.index = index, this.triggerAnimation()
         return false
       },
-      mouseover(index) {
+      mouseover (index) {
         if (this.trigger === 'hover') return clearInterval(this.timer), this.index = index
         return false
       },
-      mouseout(index) {
+      mouseout (index) {
         if (this.trigger === 'hover') return this.triggerAnimation()
         return false
       },
@@ -118,25 +118,27 @@
 </script>
 
 <style scoped>
-  #ux_carousel > *:not(.carousel-indicator) {
-    width: 100%;
-  }
-
-  .carousel-slot {
-    position: relative;
+  #ux_carousel {
     width: 100%;
     overflow: hidden;
   }
 
+  .carousel-slot {
+    width: auto;
+  }
+
   .carousel-slot > * {
     min-height: 10em;
-    width: 100%;
+    -webkit-flex-basis: 100%;
     flex-basis: 100%;
+    flex-wrap: nowrap;
+    overflow: hidden;
   }
 
-  .carousel-indicator {
-
-  }
+  /*.carousel-indicator {
+    width: 100%;
+    overflow: hidden;
+  }*/
 
   .indicator-type {
     background-color: hsla(0, 0%, 100%, .8);
