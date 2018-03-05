@@ -120,6 +120,10 @@
 </script>
 
 <style scoped>
+  .fa {
+    font-size: 1em;
+  }
+
   #ux_video {
     display: inline-block;
     background-color: #efefef;
@@ -149,7 +153,7 @@
     bottom: 0;
     left: 0;
     background-color: #ff6e0b;
-    z-index:2
+    z-index: 2
   }
 
   .controls-box > *:first-child {
@@ -166,5 +170,9 @@
 
   .progress-box > *:last-child {
     flex-basis: 6em;
+  }
+
+  .time-plan {
+    font-size: .6em;
   }
 </style>
