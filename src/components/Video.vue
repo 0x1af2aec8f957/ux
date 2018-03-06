@@ -66,7 +66,8 @@
     },
     watch: {
       isReady (n, o) { // 首次初始化canvas第一帧
-        return n && this.ctx.drawImage(this.videoEl, 0, 0, this.width, this.height)
+        const {videoEl, ctx, width, height, duration} = this
+        return n && ctx.drawImage(videoEl, 0, 0, width, height) || this.$emit('ready', duration)
       },
     },
     data () {
@@ -91,26 +92,32 @@
         return this.isPlay ? this.videoEl.pause() : this.videoEl.play()
       },
       play () { // 当音频/视频已开始或不再暂停时
+        const {ctx, currentTime, duration} = this
         return this.isPlay = true,
+          this.$emit('play', {currentTime, duration}),
           this.timer = this.ctx && setInterval(() => {
             return this.currentTime = this.videoEl.currentTime,
-              this.ctx.drawImage(this.videoEl, 0, 0, this.width, this.height)
+              ctx.drawImage(this.videoEl, 0, 0, this.width, this.height)
           }, 1)
       },
       playing () { // 因缓冲而暂停或停止后已就绪时
-
+        const {currentTime, duration} = this
+        return this.$emit('playing', {currentTime, duration})
       },
       pause () { // 当音频/视频已暂停时
-        return this.isPlay = false, clearInterval(this.timer)
+        const {currentTime, duration} = this
+        return this.isPlay = false,
+          this.$emit('pause', {currentTime, duration}),
+          clearInterval(this.timer)
       },
       ended () { // 当目前的播放列表已结束时
-        return this.isPlay = false, clearInterval(this.timer)
+        const {currentTime, duration} = this
+        return this.isPlay = false,
+          this.$emit('ended', {currentTime, duration}),
+          clearInterval(this.timer)
       },
-//      durationchange() { // 当音频/视频的时长已更改时
-//      },
-//      volumechange() { // 当音量已更改时
-//      },
-      error () { // 当在音频/视频加载期间发生错误时
+      error (e) { // 当在音频/视频加载期间发生错误时
+        return this.$emit('error', e)
       },
     },
     destroyed () { // 销毁之前清除计时器
