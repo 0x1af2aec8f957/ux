@@ -2,11 +2,11 @@
   <div id="ux_carousel" class="relative-box">
     <div class="carousel-slot flex-box relative-box" :name="animation">
       <slot>
-        <p style="font-size: 1em;color:red">跑马灯组件需要一个slot，请查阅文档!</p>
+        <p style="font-size: 1em;color:red"><!--banner is no slot!--></p>
       </slot>
     </div>
     <div
-      :class="['carousel-indicator', 'absolute-box', 'align-center',indicatorAxis==='y'&&'flex-column','cursor-pointer']"
+      :class="['carousel-indicator', `${position}-box`, 'flex-box','align-center',indicatorAxis==='y'&&'flex-column','cursor-pointer']"
       :indicator="indicator">
       <i v-for="(x,i) in indicatorNumber"
          :class="['indicator-box', `indicator-${i}`,index===i&&'active','relative-box']"
@@ -25,9 +25,10 @@
   export default {
     name: 'uxCarousel',
     props: {
-      trigger: {type: String, default: 'click'}, // 触发条件
+      trigger: {type: String, default: 'hover'}, // 触发条件
       arrow: {type: String, default: 'never'}, //切换箭头显示时机
       indicator: {type: String, default: 'bottom'}, // 指示器显示位置
+      position: {type: String, default: 'absolute'}, // 指示器的定位模式
       animation: {type: String, default: 'slide'}, //动画类型
       speed: {type: Number, default: 3} // 动画运动速度[单位：S]
     },
@@ -46,7 +47,7 @@
     },
     watch: {
       index (n, o) { // 运动过程[主要要的动画函数]
-        this.$nextTick(() => {
+        return this.$nextTick(() => {
           const parentEl = this.$el.querySelector('.carousel-slot'), currentEl = parentEl.children, // 运动元素
             indicatorEl = this.$el.querySelector('.active>.indicator-type'), // 正在变换的指示器
             {animation = 'slide', indicatorNumber, indicatorAxis, time, css, output} = this
@@ -55,7 +56,7 @@
           output('indicator', `---Carousel组件已经统计出上一次分发的插槽周期内嵌套循环的次数---`, i_count)
           i_count = 0
           if (animation === 'fade') { // fade
-            currentEl[o].classList.remove('fadeIn') || currentEl[n].classList.add('fadeIn') // 移除、添加动画class
+            currentEl[o]/* 确保第一次能够正常运行 */ && currentEl[o].classList.remove('fadeIn') || currentEl[n].classList.add('fadeIn') // 移除、添加动画class
           } else { // slide
             parentEl.classList[n !== 0 /* 用于无缝，需要重复第一个slot[最后一个不需要过渡作用] */ ? 'add' : 'remove']('slide-transition') ||
             css(parentEl, {transform: `translatex(-${n * 100}%)`})
@@ -141,13 +142,14 @@
   }*/
 
   .indicator-type {
-    background-color: hsla(0, 0%, 100%, .8);
+    background-color: #888888;
     z-index: 10;
   }
 
   [name="fade"] > * {
     animation-duration: 1s;
     animation-fill-mode: both;
+    animation-name: ivuFadeIn;
   }
 
   [name="fade"] > *:not(.fadeIn) {
@@ -188,26 +190,30 @@
     height: 0
   }
 
-  [indicator="top"] {
+  .absolute-box[indicator="top"] {
     top: 1em
   }
 
-  [indicator="right"] {
+  .absolute-box[indicator="right"] {
     right: 1em
   }
 
-  [indicator="bottom"] {
+  .absolute-box[indicator="bottom"] {
     bottom: 1em
   }
 
-  [indicator="left"] {
+  .relative-box[indicator="bottom"] {
+    margin-top: 1em
+  }
+
+  .absolute-box[indicator="left"] {
     left: 1em
   }
 
   .indicator-box { /*横向*/
-    height: .2em;
-    width: 2em;
-    background-color: hsla(0, 0%, 74%, .4);
+    height: .1em;
+    width: 3em;
+    background-color: #d7d7d7;
     overflow: hidden;
     transition: all .35s;
     margin: 0 .5em;
