@@ -1,7 +1,7 @@
 <template>
   <div id="ux_select" :class="['relative-box', 'cursor-pointer',type&&'active']" @click.stop="type=!type">
     <p :class="[value&&label&&'select-box']"
-       v-text="value&&label||placeholder"></p>
+       v-text="label||value||placeholder"></p>
     <div class="absolute-box option-box" v-show="type">
       <slot>
         <p style="font-size: 1em;color:red">Select is not slot</p>
@@ -29,19 +29,27 @@
         return n && this.$nextTick(() => { // 确保DOM已经完成渲染
           this.optionEl = this.$el.querySelector('.option-box') // 再一次重置option的DOM
           this.uiUpdate() // 更新用户UI视图
-          for (let x of this.optionEl.children) x.onclick = function (event) { // onclick可以覆盖，无需解绑事件
+          for (let x of this.optionEl.children) x.onclick = event => { // onclick可以覆盖，无需解绑事件
             return event = event.target,
               this.label = this.getLabel(event) /* 更新父组件展示的数据 */,
             this.$emit('input', this.getValue(event)) /* 更新父组件value */ &&
             this.$emit('change', this.getValue(event))
             /* 触发父组件change事件 */
-          }.bind(this)
+          }
         })
       },
     },
     mounted () {
       this.$nextTick(() => this.init()) // 初始化视图数据
+      /*return window.addEventListener
+        ? document.addEventListener('mousedown', this.optionHide)
+        : document.attachEvent('mousedown', this.optionHide)*/
     },
+    /*destroyed () { // 销毁绑定在document的事件
+      return window.removeEventListener
+        ? document.removeEventListener('mousedown', this.optionHide)
+        : document.detachEvent('mousedown', this.optionHide)
+    },*/
     methods: {
       init () { // 首次更新视图
         this.optionEl = this.$el.querySelector('.option-box') // 获取当前组件的option节点
@@ -58,6 +66,9 @@
           ? x.classList.add('active')
           : x.classList.remove('active')
         return callback && callback()
+      },
+      optionHide () {
+        return this.type = false
       },
     },
   }
