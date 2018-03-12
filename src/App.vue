@@ -6,7 +6,11 @@
     <Radio :data="radioDta" v-model="msg" label="a" selected="a"/>
     <Checkbox :data="radioDta" v-model="msgData" label="a" selected="a"/>
     <ux_switch v-model="msg"/>
-    <Select v-model="msg" placeholder="hello" :data="data" label="a" selected="a"/>
+    <Select v-model="msg" placeholder="hello" :data="data" label="a" selected="a">
+      <p :value="1">1</p>
+      <p :value="2">2</p>
+      <p :value="3">3</p>
+    </Select>
     <br/>
     <Slider v-model="msg"></Slider>
     <Rate v-model="msg"></Rate>
@@ -29,7 +33,7 @@
       <div style="background-color: #110fff"></div>
       <div style="background-color: black"></div>
     </Carousel>
-    <Video :width="320" @ready="alert"></Video>
+    <Video :width="320"></Video>
   </div>
 </template>
 

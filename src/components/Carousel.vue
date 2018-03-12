@@ -2,7 +2,7 @@
   <div id="ux_carousel" class="relative-box">
     <div class="carousel-slot flex-box relative-box" :name="animation">
       <slot>
-        <p style="font-size: 1em;color:red"><!--banner is no slot!--></p>
+        <p style="font-size: 1em;color:red">banner is no slot!</p>
       </slot>
     </div>
     <div
@@ -56,7 +56,8 @@
           output('indicator', `---Carousel组件已经统计出上一次分发的插槽周期内嵌套循环的次数---`, i_count)
           i_count = 0
           if (animation === 'fade') { // fade
-            currentEl[o]/* 确保第一次能够正常运行 */ && currentEl[o].classList.remove('fadeIn') || currentEl[n].classList.add('fadeIn') // 移除、添加动画class
+            currentEl[o]/* 确保第一次能够正常运行 */ && currentEl[o].classList.remove('fadeIn') ||
+            currentEl[n].classList.add('fadeIn') // 移除、添加动画class
           } else { // slide
             parentEl.classList[n !== 0 /* 用于无缝，需要重复第一个slot[最后一个不需要过渡作用] */ ? 'add' : 'remove']('slide-transition') ||
             css(parentEl, {transform: `translatex(-${n * 100}%)`})

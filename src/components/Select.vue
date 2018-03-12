@@ -3,10 +3,9 @@
     <p :class="[value&&'select-box']"
        v-text="value[label]||value||placeholder"></p>
     <div class="absolute-box option-box" v-if="type">
-      <p v-for="(x,i) in data" v-text="x[label]||x"
-         :class="['option-text',(x[selected]||x)===(value[selected]||value)&&'active']"
-         :key="(x[selected]||x)+i"
-         @click.stop="clickMethods(x)"></p>
+      <slot>
+        <p style="font-size: 1em;color:red">Select is not slot</p>
+      </slot>
     </div>
   </div>
 </template>
@@ -24,12 +23,30 @@
     },
     data () {
       return {
-        type: false // 初始化option展开状态
+        type: false, // 初始化option展开状态
+        optionEl: document.querySelector('.option-box'), // 存储element元素
       }
     },
+    watch: {
+      type (n, o) {
+        return n && this.$nextTick(() => { // 确保DOM已经完成渲染
+          this.optionEl = this.$el.querySelector('.option-box') // 再一次重置option的DOM
+          this.uiUpdate() // 更新用户UI视图
+          for (let x of this.optionEl.children) x.onclick = function (event) { // onclick可以覆盖，无需解绑事件
+            return event = event.target, this.$emit('input', this.getValue(event)) // 更新父组件value
+          }.bind(this)
+        })
+      },
+    },
     methods: {
-      clickMethods (e) {
-        return this.type = false/*关闭选择窗*/, this.$emit('input', e[this.selected] || e)
+      getValue (element) { // 获取slot的value
+        return element.getAttribute('value')
+      },
+      uiUpdate (callback) { // 更新UI视图
+        for (let x of this.optionEl.children) this.value === this.getValue(x)
+          ? x.classList.add('active')
+          : x.classList.remove('active')
+        return callback && callback()
       },
     },
   }
@@ -80,11 +97,11 @@
     z-index: 900;
   }
 
-  .option-text {
+  .option-box > * {
     padding: .3em
   }
 
-  .option-text.active {
+  .option-box > .active {
     color: #fff;
     background: rgba(45, 140, 240, .9);
   }
