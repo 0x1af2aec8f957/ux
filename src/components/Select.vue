@@ -1,7 +1,7 @@
 <template>
   <div id="ux_select" :class="['relative-box', 'cursor-pointer',type&&'active']" @click.stop="type=!type">
     <p :class="[value&&'select-box']"
-       v-text="value[label]||value||placeholder"></p>
+       v-text="value||placeholder"></p>
     <div class="absolute-box option-box" v-if="type">
       <slot>
         <p style="font-size: 1em;color:red">Select is not slot</p>
@@ -15,11 +15,7 @@
     name: 'uxSelect',
     props: {
       value: [String, Number, Boolean, Function, Object, Array, Symbol], // 父组件的默认值[:value]
-      //msg: {type: String, default: ''}, // 错误消息
-      selected: {type: String}, // 选择时保存的数据[key]
       placeholder: {type: String, default: '请选择...'}, // input_placeholder提示文字
-      data: {type: Array, required: true},
-      label: {type: String},
     },
     data () {
       return {

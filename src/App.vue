@@ -6,7 +6,7 @@
     <Radio :data="radioDta" v-model="msg" label="a" selected="a"/>
     <Checkbox :data="radioDta" v-model="msgData" label="a" selected="a"/>
     <ux_switch v-model="msg"/>
-    <Select v-model="msg" placeholder="hello" :data="data" label="a" selected="a">
+    <Select v-model="selectData" placeholder="hello">
       <p :value="1">1</p>
       <p :value="2">2</p>
       <p :value="3">3</p>
@@ -92,6 +92,7 @@
           {a: 1},
           {a: 2}, {a: 3}, {a: 4}, {a: 5}, {a: 6},
         ],
+        selectData:''
       }
     },
     watch: {
