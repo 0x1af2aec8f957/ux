@@ -3,7 +3,7 @@
     <canvas id="video_canvas" :width="width" :height="height">
       Your browser does not support the HTML5 canvas tag.
     </canvas>
-    <div class="controls-box flex-box no-select">
+    <div class="controls-box flex-box no-select" v-if="controls">
       <div class="play-button align-center">
         <i
           :class="['fa', isReady?isPlay?'fa-pause':'fa-play':'fa-hourglass-half', isReady?'cursor-pointer':'cursor-wait']"
