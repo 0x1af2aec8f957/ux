@@ -65,8 +65,8 @@
     border-radius: 100px;
   }
 
-  .slider-box, .slider-block {
-    transition: all .2s linear;
+  .slider-box {
+    transition: transform .2s linear;
   }
 
   .slider-box {
