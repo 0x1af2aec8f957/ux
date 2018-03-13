@@ -1,6 +1,70 @@
+<template>
+  <div id="ux_spinner">
+    <div v-if="doubleBounce" class="doubleBounce">
+      <!--doubleBounce-->
+      <div class="mint-spinner-double-bounce" style="width: 28px; height: 28px;">
+        <div class="mint-spinner-double-bounce-bounce1" style="background-color: rgb(38, 162, 255);"></div>
+        <div class="mint-spinner-double-bounce-bounce2" style="background-color: rgb(38, 162, 255);"></div>
+      </div>
+    </div>
+    <div v-else-if="tripleBounce" class="tripleBounce">
+      <!--tripleBounce-->
+      <div class="mint-spinner-triple-bounce">
+        <div class="mint-spinner-triple-bounce-bounce1"
+             style="width: 9.33333px; height: 9.33333px; background-color: rgb(38, 162, 255);"></div>
+        <div class="mint-spinner-triple-bounce-bounce2"
+             style="width: 9.33333px; height: 9.33333px; background-color: rgb(38, 162, 255);"></div>
+        <div class="mint-spinner-triple-bounce-bounce3"
+             style="width: 9.33333px; height: 9.33333px; background-color: rgb(38, 162, 255);"></div>
+      </div>
+    </div>
+    <div v-else class="fadingCircle">
+      <!--fadingCircle-->
+      <div class="mint-spinner-fading-circle circle-color-1903" style="width: 28px; height: 28px;">
+        <div class="mint-spinner-fading-circle-circle is-circle2"></div>
+        <div class="mint-spinner-fading-circle-circle is-circle3"></div>
+        <div class="mint-spinner-fading-circle-circle is-circle4"></div>
+        <div class="mint-spinner-fading-circle-circle is-circle5"></div>
+        <div class="mint-spinner-fading-circle-circle is-circle6"></div>
+        <div class="mint-spinner-fading-circle-circle is-circle7"></div>
+        <div class="mint-spinner-fading-circle-circle is-circle8"></div>
+        <div class="mint-spinner-fading-circle-circle is-circle9"></div>
+        <div class="mint-spinner-fading-circle-circle is-circle10"></div>
+        <div class="mint-spinner-fading-circle-circle is-circle11"></div>
+        <div class="mint-spinner-fading-circle-circle is-circle12"></div>
+        <div class="mint-spinner-fading-circle-circle is-circle13"></div>
+      </div>
+    </div>
+    <slot></slot>
+  </div>
+</template>
+
+<script>
+  //javascript code
+  export default {
+    name: 'uxSpinner',
+    props: {
+      name: {
+        type: String,
+        default: 'doubleBounce',
+        required: true
+      },
+      text: null
+    },
+    computed: {
+      doubleBounce () {
+        return this.name === 'doubleBounce'
+      },
+      tripleBounce () {
+        return this.name === 'tripleBounce'
+      },
+      fadingCircle () {
+        return this.name === 'fadingCircle'
+      }
+    }
+  }
+</script>
 <style scoped>
-  /*css code*/
-  /*全局过度状态*/
   .slide-fade-ente {
     transform: translateX(-100%);
     transition: all .3s ease;
@@ -255,69 +319,3 @@
     }
   }
 </style>
-<template>
-  <div id="spinner">
-    <div v-if="doubleBounce" class="doubleBounce">
-      <!--doubleBounce-->
-      <div class="mint-spinner-double-bounce" style="width: 28px; height: 28px;">
-        <div class="mint-spinner-double-bounce-bounce1" style="background-color: rgb(38, 162, 255);"></div>
-        <div class="mint-spinner-double-bounce-bounce2" style="background-color: rgb(38, 162, 255);"></div>
-      </div>
-    </div>
-    <div v-else-if="tripleBounce" class="tripleBounce">
-      <!--tripleBounce-->
-      <div class="mint-spinner-triple-bounce">
-        <div class="mint-spinner-triple-bounce-bounce1"
-             style="width: 9.33333px; height: 9.33333px; background-color: rgb(38, 162, 255);"></div>
-        <div class="mint-spinner-triple-bounce-bounce2"
-             style="width: 9.33333px; height: 9.33333px; background-color: rgb(38, 162, 255);"></div>
-        <div class="mint-spinner-triple-bounce-bounce3"
-             style="width: 9.33333px; height: 9.33333px; background-color: rgb(38, 162, 255);"></div>
-      </div>
-    </div>
-    <div v-else class="fadingCircle">
-      <!--fadingCircle-->
-      <div class="mint-spinner-fading-circle circle-color-1903" style="width: 28px; height: 28px;">
-        <div class="mint-spinner-fading-circle-circle is-circle2"></div>
-        <div class="mint-spinner-fading-circle-circle is-circle3"></div>
-        <div class="mint-spinner-fading-circle-circle is-circle4"></div>
-        <div class="mint-spinner-fading-circle-circle is-circle5"></div>
-        <div class="mint-spinner-fading-circle-circle is-circle6"></div>
-        <div class="mint-spinner-fading-circle-circle is-circle7"></div>
-        <div class="mint-spinner-fading-circle-circle is-circle8"></div>
-        <div class="mint-spinner-fading-circle-circle is-circle9"></div>
-        <div class="mint-spinner-fading-circle-circle is-circle10"></div>
-        <div class="mint-spinner-fading-circle-circle is-circle11"></div>
-        <div class="mint-spinner-fading-circle-circle is-circle12"></div>
-        <div class="mint-spinner-fading-circle-circle is-circle13"></div>
-      </div>
-    </div>
-    <slot></slot>
-  </div>
-</template>
-
-<script>
-  //javascript code
-  export default {
-    name: 'spinner',
-    props: {
-      name: {
-        type: String,
-        default: 'doubleBounce',
-        required: true
-      },
-      text: null
-    },
-    computed: {
-      doubleBounce () {
-        return this.name === 'doubleBounce' ? true : false
-      },
-      tripleBounce () {
-        return this.name === 'tripleBounce' ? true : false
-      },
-      fadingCircle () {
-        return this.name === 'fadingCircle' ? true : false
-      }
-    }
-  }
-</script>

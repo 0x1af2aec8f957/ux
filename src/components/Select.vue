@@ -2,7 +2,7 @@
   <div id="ux_select" :class="['relative-box', 'cursor-pointer',type&&'active']" @click.stop="type=!type">
     <p :class="[value&&label&&'select-box']"
        v-text="label||value||placeholder"></p>
-    <div class="absolute-box option-box" v-show="type">
+    <div class="absolute-box option-box" v-if="type">
       <slot>
         <p style="font-size: 1em;color:red">Select is not slot</p>
       </slot>

@@ -34,6 +34,7 @@
       <div style="background-color: black"></div>
     </Carousel>
     <Video :width="320" controls></Video>
+    <Color @change="alert"></Color>
   </div>
 </template>
 
@@ -54,6 +55,7 @@
   import Page from './components/Page'
   import Carousel from './components/Carousel'
   import Video from './components/Video'
+  import Color from './components/Color'
 
   export default {
     name: 'App',
@@ -74,6 +76,7 @@
       Page,
       Carousel,
       Video,
+      Color
     },
     data () {
       return {

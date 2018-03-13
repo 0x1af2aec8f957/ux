@@ -50,7 +50,7 @@
     margin-left: .5em;
   }
 
-  .radio-box.active:before {
+  .radio-box.active,.radio-box.active:before {
     color: #2d8cf0
   }
 </style>

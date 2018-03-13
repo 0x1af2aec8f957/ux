@@ -52,7 +52,7 @@
     margin-left: .5em;
   }
 
-  .checkbox-box.active:before {
+  .checkbox-box.active,.checkbox-box.active:before {
     color: #2d8cf0;
   }
 </style>
