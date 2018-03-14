@@ -35,6 +35,7 @@
     </Carousel>
     <Video :width="320" controls></Video>
     <Color @change="alert"></Color>
+    <Drag></Drag>
   </div>
 </template>
 
@@ -56,6 +57,7 @@
   import Carousel from './components/Carousel'
   import Video from './components/Video'
   import Color from './components/Color'
+  import Drag from './components/Drag'
 
   export default {
     name: 'App',
@@ -76,7 +78,8 @@
       Page,
       Carousel,
       Video,
-      Color
+      Color,
+      Drag
     },
     data () {
       return {
@@ -95,7 +98,7 @@
           {a: 1},
           {a: 2}, {a: 3}, {a: 4}, {a: 5}, {a: 6},
         ],
-        selectData:''
+        selectData: '',
       }
     },
     watch: {
@@ -104,7 +107,7 @@
       },
     },
     methods: {
-      alert (e) {alert(e)},
+      alert (e) {alert(typeof e === 'object' ? JSON.stringify(e) : e)},
     },
   }
 </script>
