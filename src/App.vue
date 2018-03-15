@@ -79,7 +79,7 @@
       Carousel,
       Video,
       Color,
-      Drag
+      Drag,
     },
     data () {
       return {

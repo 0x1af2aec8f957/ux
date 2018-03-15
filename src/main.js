@@ -4,9 +4,11 @@ import Vue from 'vue'
 import App from './App'
 import 'qc-ui'
 import './assets/main.css'
+import vw from 'em-vw'
 
 Vue.config.productionTip = false
 
+vw()
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

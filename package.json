@@ -10,7 +10,8 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "qc-ui": "^0.1.2",
+    "em-vw": "0.0.1",
+    "qc-ui": "^0.1.3",
     "vue": "^2.5.2"
   },
   "devDependencies": {
