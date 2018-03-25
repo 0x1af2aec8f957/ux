@@ -5,8 +5,10 @@ import App from './App'
 import 'qc-ui'
 import './assets/main.css'
 import vw from 'em-vw'
+import ux from './components'
 
 Vue.config.productionTip = false
+Vue.use(ux)
 
 vw()
 /* eslint-disable no-new */

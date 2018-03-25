@@ -40,47 +40,9 @@
 </template>
 
 <script>
-  import HelloWorld from './components/HelloWorld'
-  import Input from './components/Input'
-  import Radio from './components/Radio'
-  import Checkbox from './components/Checkbox'
-  import ux_switch from './components/Switch'
-  import Select from './components/Select'
-  import Slider from './components/Slider'
-  import Rate from './components/Rate'
-  import Collapse from './components/Collapse'
-  import Progress from './components/Progress'
-  import Timeline from './components/Timeline'
-  import BackTop from './components/BackTop'
-  import Poptip from './components/Poptip'
-  import Page from './components/Page'
-  import Carousel from './components/Carousel'
-  import Video from './components/Video'
-  import Color from './components/Color'
-  import Drag from './components/Drag'
 
   export default {
     name: 'App',
-    components: {
-      HelloWorld,
-      Input,
-      Radio,
-      Checkbox,
-      ux_switch,
-      Select,
-      Slider,
-      Rate,
-      Collapse,
-      Progress,
-      Timeline,
-      BackTop,
-      Poptip,
-      Page,
-      Carousel,
-      Video,
-      Color,
-      Drag,
-    },
     data () {
       return {
         msg: 1,
