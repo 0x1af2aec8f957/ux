@@ -1,5 +1,5 @@
 <template>
-  <div id="ux_page" class="flex-wrap text-overflow">
+  <div id="ux_page" class="flex-wrap text-overflow align-center">
     <span class="page-previous align-center cursor-pointer"
           @click.stop="value>1&&$emit('input',value-1)">上一页</span>
     <span v-for="(x,i) in pageNumber"
@@ -23,7 +23,7 @@
     },
     computed: {
       pageNumber () { // 计算总页数
-        return this.total / this.size
+        return Math.ceil(this.total / this.size)
       },
     },
     data () {

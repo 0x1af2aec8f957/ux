@@ -95,7 +95,6 @@
       },
       output(type, content, count) { // 控制台输出
         if (location.origin.includes('http://localhost:')) {
-          console.log(`UX_Carousel[${type}]------`)
           console.dir(content)
           console.info(`UX_Carousel run ${count} times. --https://github.com/noteScript`)
         }

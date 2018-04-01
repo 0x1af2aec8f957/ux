@@ -1,11 +1,8 @@
 <template>
   <div id="ux_radio">
-    <span v-for="(x,i) in data"
-          :class="['radio-box','cursor-pointer',value===(x[selected]||x)&&'active']"
-          :key="(x[selected]||x)+i"
-          @click.stop="clickMethods(x)"
-          v-text="x[label]||x">
-    </span>
+    <slot>
+      <p style="font-size: 1em;color:red">Radio is not slot</p>
+    </slot>
   </div>
 </template>
 
@@ -13,44 +10,62 @@
   export default {
     name: 'uxRadio',
     props: [
-      'data', // 单选列表的数据
-      'value', // 父组件的默认值[:value]
-      'label', // 用户界面展示的文字信息
-      'selected',
+      'value' // 父组件的默认值[:value]
     ],
-    methods: {
-      clickMethods (e) {
-        e = e[this.selected] || e // 获取到需要的数据
-        return this.$emit('input', e)
+    computed: {
+      slotsBool () { // 判断slots是否已经渲染
+        if (this.$slots.default) for (let x of this.$slots.default/*无名插槽*/) if (x.tag) return x // 存储携带slot节点
+        return null
       },
+    },
+    watch: {
+      value (n, o) {
+        const {slotsBool} = this, value = slotsBool && this.getValue() // 后续监听用户选择事件
+        return slotsBool && this.$el.firstElementChild.classList[n == value ? 'add' : 'remove']('active')
+      },
+    },
+    mounted () {
+      return this.init()
+    },
+    methods: {
+      init () {
+        this.$el.firstElementChild.classList[this.value == this.getValue() ? 'add' : 'remove']('active') // 首次初始化
+        return this.$el.onclick = this.clickMethods
+      },
+      clickMethods (e) {
+        // e = e[this.selected] || e // 获取到需要的数据
+        return this.$emit('input', this.getValue()) || e.stopPropagation()
+      },
+      getValue () { // 获取slot的value
+        return this.$el.firstElementChild.getAttribute('value')
+      }
     },
   }
 </script>
 
 <style scoped>
-  #ux_radio{
+  #ux_radio {
     display: inline-block;
   }
-  .radio-box {
+
+  #ux_radio > * {
     margin-top: .5em;
     padding: .15em;
     border-radius: 2px;
+    cursor: pointer;
   }
 
-  .radio-box::before {
-    content: "\f058";
+  #ux_radio > *::before {
+    content: "\f111";
     font-family: 'Font Awesome 5 Free';
-    margin-right: .35em;
-    transition: all .2s ease-in-out;
+    transition: color .25s ease-in-out;
     color: #dddee1;
-    font-weight: 100;
+    font-weight: 900;
+    margin-right: .35em;
   }
 
-  .radio-box:not(:first-child) {
-    margin-left: .5em;
-  }
-
-  .radio-box.active,.radio-box.active:before {
-    color: #2d8cf0
+  #ux_radio > *[class~="active"]:before {
+    color: #2d8cf0;
+    content: "\f192";
   }
 </style>

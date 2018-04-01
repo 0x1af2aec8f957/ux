@@ -12,7 +12,7 @@
       focus: {type: String, default: '发送验证码'}, // 默认显示的文字
       template: {type: String, default: '已发送{{time}}'}, // 动态展示模板,time为动态插入的计时器数值
       blur: {type: String, default: '再次发送'}, // 计时器完毕后展示的文字
-      time: {type: Number, default: 60} // 重置时间
+      time: {type: Number, default: 60} // 重置时间[秒]
     },
     data() {
       return {
@@ -38,7 +38,7 @@
       },
       timerFn() {
         this.type = 0 // 开始
-        const {btnText,} = this // 提取要展示的文案
+        const {btnText,output} = this // 提取要展示的文案
         let {time} = this // 时间
         return this.timer = setInterval(() => {
           if (time > 0) {
@@ -52,7 +52,6 @@
       },
       output(type, content, count) { // 控制台输出
         if (location.origin.includes('http://localhost:')) {
-          console.log(`UX_Carousel[${type}]------`)
           console.dir(content)
           console.info(`UX_Carousel run ${count} times. --https://github.com/noteScript`)
         }

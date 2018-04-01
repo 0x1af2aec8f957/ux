@@ -6,6 +6,7 @@ import Checkbox from './Checkbox'
 import Collapse from './Collapse'
 import Color from './Color'
 import Drag from './Drag'
+import Countdown from './Countdown'
 import HelloWorld from './HelloWorld'
 import Input from './Input'
 import Page from './Page'
@@ -21,6 +22,12 @@ import Timeline from './Timeline'
 import Timer from './Timer'
 import Video from './Video'
 
+import Notify from './Notify'
+import { alert } from './Alert'
+
+Notify.config('notify-message', 2000)
+/* ELEMENT */
+
 const UX = {
   BackTop,
   Carousel,
@@ -28,6 +35,7 @@ const UX = {
   Collapse,
   Color,
   Drag,
+  Countdown,
   HelloWorld,
   Input,
   Page,
@@ -44,6 +52,10 @@ const UX = {
   Video,
 }, install = Vue => { // vue plugin method
   for (let [key, value] of Object.entries(UX)) Vue.component(key, value)
+  return Object.assign(Vue.prototype, {
+    $notify: Notify.notify,
+    $alert: alert
+  })
 }
 
 !!window && window.Vue && install(window.Vue) // auto install

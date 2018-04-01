@@ -1,6 +1,6 @@
 <template>
-  <div id="ux_select" :class="['relative-box', 'cursor-pointer',type&&'active']" @click.stop="type=!type">
-    <p :class="[value&&label&&'select-box']"
+  <div id="ux_select" :class="['relative-box','cursor-pointer',type&&'active']" @click.stop="type=!type">
+    <p :class="[value&&label&&'select-box','selected-placeholder','items-center']"
        v-text="label||value||placeholder"></p>
     <div class="absolute-box option-box" v-show="type">
       <slot>
@@ -71,6 +71,9 @@
         return this.type = false
       },
     },
+    updated () {
+      this.init() // 视图纠正
+    },
   }
 </script>
 
@@ -78,25 +81,38 @@
   #ux_select {
     display: inline-block;
     border: .1em solid #dddee1;
-    transition: all .2s ease-in-out;
-    padding: .25em 2em .25em .8em;
+    padding: 2% 2em 2% 2%;
     color: #bbbec4;
-    border-radius: 2px;
+    border-radius: .2em;
     min-width: 10em;
+  }
+
+  #ux_select, .option-box, #ux_select::after, .option-box > * {
+    transition: all .2s ease-in-out;
   }
 
   #ux_select::after {
     content: "\f0d7";
     font-family: 'Font Awesome 5 Free';
-    transition: all .2s ease-in-out;
     font-weight: 900;
     position: absolute;
     right: .5em;
-    top: .45em;
+    top: 50%;
+    transform: translateY(-50%);
     color: #80848f
   }
 
-  #ux_select.active::after {
+  #ux_select:hover {
+    border-color: #57a3f3;
+  }
+
+  #ux_select[class~="active"] {
+    border-color: #57a3f3;
+    outline: 0;
+    box-shadow: 0 0 0 2px rgba(45, 140, 240, .2);
+  }
+
+  #ux_select[class~="active"]::after {
     transform: rotate(180deg);
   }
 
@@ -107,24 +123,41 @@
   .option-box {
     transform-origin: center top 0;
     left: 0;
-    top: 2.6em;
+    top: 115%;
     right: 0;
     max-height: 14em;
     overflow: auto;
     padding: .5em 0;
     background-color: #fff;
     box-sizing: border-box;
-    border-radius: 2px;
+    border-radius: .1em;
     box-shadow: 0 .1em .5em rgba(0, 0, 0, .2);
     z-index: 900;
   }
 
   .option-box > * {
-    padding: .3em
+    padding: 3% 3%;
+    background-color: transparent;
+  }
+
+  .option-box > *:hover {
+    background-color: #495060;
+    color: #ffffff;
   }
 
   .option-box > .active {
     color: #fff;
     background: rgba(45, 140, 240, .9);
   }
+
+  .selected-placeholder {
+    height: 100%;
+    width: 100%;
+  }
+
+  /*.selected-placeholder {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+  }*/
 </style>
