@@ -16,7 +16,7 @@ export default {
     value: [String, Number, Boolean, Function, Object, Array, Symbol], // 父组件的默认值[:value]
     placeholder: {
       type: String,
-      default: '请选择...'
+      default: '请选择...',
     }, // input_placeholder提示文字
   },
   data() {
@@ -34,26 +34,35 @@ export default {
         for (let x of this.optionEl.children) x.onmousedown = event => { // onclick可以覆盖，无需解绑事件
           // event.stopPropagation()||event.preventDefault()
           // event = event.target,
-          this.label = this.getLabel(event.target) /* 更新父组件展示的数据 */
-          this.$emit('input', this.getValue(event.target)) /* 更新父组件value */
+          this.label = this.getLabel(event.target)
+          /* 更新父组件展示的数据 */
+          this.$emit('input', this.getValue(event.target))
+          /* 更新父组件value */
           this.$emit('change', this.getValue(event.target))
           return false
           /* 触发父组件change事件 */
         }
       })
     },
+    value(n, o) {
+      this.init()
+    },
   },
   mounted() {
     this.$nextTick(() => this.init()) // 初始化视图数据
-    return window.addEventListener ? document.addEventListener('mousedown', this.optionHide) : document.attachEvent('mousedown', this.optionHide)
+    return window.addEventListener ? document.addEventListener('mousedown', this.optionHide) : document.attachEvent(
+      'mousedown', this.optionHide)
   },
   beforeDestroy() {
-    window.removeEventListener ? document.removeEventListener('mousedown', this.optionHide) : document.detachEvent('mousedown', this.optionHide)
+    window.removeEventListener ? document.removeEventListener('mousedown', this.optionHide) : document.detachEvent(
+      'mousedown', this.optionHide)
   },
   methods: {
     init() { // 首次更新视图
       this.optionEl = this.$el.querySelector('.option-box') // 获取当前组件的option节点
-      for (let x of this.optionEl.children) this.value == this.getValue(x) && (this.label = this.getLabel(x))
+      let label = ''
+      for (let x of this.optionEl.children) label = this.value == this.getValue(x) ? this.getLabel(x) : label
+      return this.label = label
     },
     getValue(element) { // 获取slot的value
       return element.getAttribute('value')
@@ -69,6 +78,13 @@ export default {
     },
     optionHide() {
       return this.type = false
+    },
+    typeChange(event) { // 使得滚动条可点击[拖动]
+      if (event.target === this.optionEl) return false
+      else return this.type = !this.type
+    },
+    test(e) {
+      console.log(e)
     },
   },
   updated() {
