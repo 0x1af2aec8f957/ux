@@ -44,7 +44,7 @@ export default {
         }
       })
     },
-    value(n, o) {
+    value() {
       this.init()
     },
   },
@@ -82,10 +82,7 @@ export default {
     typeChange(event) { // 使得滚动条可点击[拖动]
       if (event.target === this.optionEl) return false
       else return this.type = !this.type
-    },
-    test(e) {
-      console.log(e)
-    },
+    }
   },
   updated() {
     this.init() // 视图纠正
