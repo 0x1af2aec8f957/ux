@@ -3,7 +3,7 @@
   <p :class="[value&&label&&'select-box','selected-placeholder','items-center']" v-text="label||value||placeholder"></p>
   <div class="absolute-box option-box" v-show="type">
     <slot>
-      <p style="font-size: 1em;color:red" value="">Select is not slot</p>
+      <p class="no-select" style="font-size: 1em;color:red">Select is not slot</p>
     </slot>
   </div>
 </div>
