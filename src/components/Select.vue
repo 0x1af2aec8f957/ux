@@ -1,5 +1,5 @@
 <template>
-<div id="ux_select" :class="['relative-box','cursor-pointer',type&&'active']" @mousedown.stop="type = !type">
+<div id="ux_select" :class="['relative-box','cursor-pointer',type&&'active']" @mousedown.stop="typeChange">
   <p :class="[value&&label&&'select-box','selected-placeholder','items-center']" v-text="label||value||placeholder"></p>
   <div class="absolute-box option-box" v-show="type">
     <slot>
