@@ -1,5 +1,4 @@
 // README:自定义组件目录[VUE]
-// TODO：template 文件夹新增文件需要手动在这里注册一次，才能使用
 import BackTop from './BackTop'
 import Carousel from './Carousel'
 import Checkbox from './Checkbox'
@@ -23,41 +22,44 @@ import Timer from './Timer'
 import Video from './Video'
 
 import Notify from './Notify'
-import { alert } from './Alert'
+import {
+  alert
+} from './Alert'
 
-Notify.config('notify-message', 2000)
+Notify.config('.notify-message', 2000)
 /* ELEMENT */
 
 const UX = {
-  BackTop,
-  Carousel,
-  Checkbox,
-  Collapse,
-  Color,
-  Drag,
-  Countdown,
-  HelloWorld,
-  Input,
-  Page,
-  Poptip,
-  Progress,
-  Radio,
-  Rate,
-  Select,
-  Slider,
-  Spinner,
-  Switch,
-  Timeline,
-  Timer,
-  Video,
-}, install = Vue => { // vue plugin method
-  for (let [key, value] of Object.entries(UX)) Vue.component(key, value)
-  return Object.assign(Vue.prototype, {
-    $notify: Notify.notify,
-    $alert: alert
-  })
-}
+    BackTop,
+    Carousel,
+    Checkbox,
+    Collapse,
+    Color,
+    Drag,
+    Countdown,
+    HelloWorld,
+    Input,
+    Page,
+    Poptip,
+    Progress,
+    Radio,
+    Rate,
+    Select,
+    Slider,
+    Spinner,
+    Switch,
+    Timeline,
+    Timer,
+    Video,
+  },
+  install = Vue => { // vue plugin method
+    for (let [key, value] of Object.entries(UX)) Vue.component(key, value)
+    return Object.assign(Vue.prototype, {
+      $notify: Notify.notify,
+      $alert: alert
+    })
+  }
 
 !!window && window.Vue && install(window.Vue) // auto install
 
-export default Object.assign(UX, {install}) // eslint-disable-line no-undef
+export default {...UX, install} // eslint-disable-line no-undef
