@@ -40,7 +40,7 @@ element.appendChild(alertInfo)
 alertEl.appendChild(element)
 element.appendChild(div)
 
-function alert ({title = `来自${location.origin}：`, content = '', confirm, cancel}) { // this isInstanceof vue.constractor
+function alert ({title = `${location.origin}：`, content = '', confirm, cancel}) { // this isInstanceof vue.constractor
   alertTitle.innerHTML = title
   alertInfo.innerHTML = content
 
@@ -49,22 +49,22 @@ function alert ({title = `来自${location.origin}：`, content = '', confirm, c
   alertBtn[1].parentElement === div && div.removeChild(alertBtn[1])
 //  So do ...
   const el = document.getElementById(id)
-  el && el.parentElement.removeChild(el) // 先移除已有DOM
+  el && alertEl.parentElement.removeChild(alertEl) // 先移除已有DOM
   if (confirm) alertBtn[0].onclick = function ($event) {
     $event.stopPropagation()
     confirm.call(this)
-    return document.documentElement.removeChild(el)
+    return alertEl.parentElement.removeChild(alertEl)
   }.bind(this)
   div.appendChild(alertBtn[0])
   if (cancel) {
     alertBtn[1].onclick = function ($event) {// this isInstanceof vue.constractor
       $event.stopPropagation()
       cancel.call(this)
-      return document.documentElement.removeChild(el)
+      return alertEl.parentElement.removeChild(alertEl)
     }.bind(this)
     div.appendChild(alertBtn[1])
   }
-  return document.documentElement.appendChild(alertEl)
+  return document.body.appendChild(alertEl)
 }
 
 export { alert }
