@@ -29,6 +29,6 @@
 
 > 我正在将UX移植到react和angular技术栈，这需要一定的时间，请静候佳音。
 
-> 通过props来最大化自定义操作，不需要传统的布局，不需要form，通过搭配(qc_ui)[https://github.com/noteScript/qc_ui]、(js-transmission)[https://github.com/noteScript/js-transmission/tree/generator]来获得最佳开发体验。
+> 通过props来最大化自定义操作，不需要传统的布局，不需要form，通过搭配[qc_ui](https://github.com/noteScript/qc_ui)、[js-transmission](https://github.com/noteScript/js-transmission/tree/generator)来获得最佳开发体验。
 
 > 这是一个完全自适应的组件库，可以同时满足PC和phone，组件库已经在[库神官网](https://www.coldlar.com)上充分发挥着作用。
