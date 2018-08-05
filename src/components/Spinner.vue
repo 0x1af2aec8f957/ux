@@ -81,7 +81,7 @@
     transform: translateX(0);
     transition: all .3s ease;
   }
-  #spinner {
+  #ux_spinner {
     background-color: #e2e2e2;
     color: #888;
     line-height: 25px;
