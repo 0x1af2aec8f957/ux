@@ -17,7 +17,7 @@
 
 #### 开始试用
 
-> 将项目克隆岛本地，复制~/src/componets文件夹，在main.js引入该文件夹下的index.js，通过Vue.install(ux)来安装使用。
+> 将项目克隆岛本地，复制~/src/componets文件夹，在main.js引入该文件夹下的index.js，通过Vue.use(ux)来安装使用。
 
 + 项目使用了ES6的代码，请你和babel搭配使用！
 
